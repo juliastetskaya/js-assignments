@@ -65,7 +65,14 @@ function* getPermutations(chars) {
  *    [ 1, 6, 5, 10, 8, 7 ] => 18  (buy at 1,6,5 and sell all at 10)
  */
 function getMostProfitFromStockQuotes(quotes) {
-    throw new Error('Not implemented');
+  let profit = 0;
+    while (quotes.length !== 0) {
+        let maxValue = Math.max(...quotes);
+        let key = quotes.lastIndexOf(maxValue);
+        profit = quotes.slice(0, key).reduce((pv, cv) => pv += maxValue - cv, profit);
+        quotes = quotes.slice(key + 1);
+    }
+    return profit;
 }
 
 
@@ -92,11 +99,20 @@ function UrlShortener() {
 UrlShortener.prototype = {
 
     encode: function(url) {
-        throw new Error('Not implemented');
+      var res = '';
+      for(let i = 0; i * 2 < url.length; i++) {
+        res += String.fromCodePoint(url.codePointAt(2 * i) * 256 + (url.codePointAt(2 * i + 1) || 0));
+      }
+      return res;
     },
     
     decode: function(code) {
-        throw new Error('Not implemented');
+      var res = '';
+      for(let i = 0; i < code.length; i++) {
+        let c = code.codePointAt(i);
+        res += String.fromCodePoint(c / 256 | 0) + (c % 256 ? String.fromCodePoint(c % 256) : '');
+      }
+      return res;
     } 
 }
 
